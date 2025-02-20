@@ -5,19 +5,48 @@ from typing import Dict, List, Tuple
 import tempfile
 import subprocess
 from datetime import datetime
+from google.cloud import texttospeech
+from azure.cognitiveservices.speech import SpeechConfig, SpeechSynthesizer
+from azure.cognitiveservices.speech.audio import AudioOutputConfig
 
 class AudioGenerator:
     def __init__(self):
+        # AWS clients
         self.bedrock = boto3.client('bedrock-runtime', region_name="us-east-1")
         self.polly = boto3.client('polly')
         self.model_id = "amazon.nova-micro-v1:0"
         
-        # Define Japanese neural voices by gender
+        # Google Cloud TTS client
+        self.google_client = texttospeech.TextToSpeechClient()
+        
+        # Azure TTS client
+        self.azure_speech_config = SpeechConfig(
+            subscription=os.getenv('AZURE_SPEECH_KEY'),
+            region=os.getenv('AZURE_SPEECH_REGION')
+        )
+        
+        # Define Japanese neural voices by gender and service
         self.voices = {
-            'male': ['Takumi'],
-            'female': ['Kazuha'],
-            'announcer': 'Takumi'  # Default announcer voice
+            'aws': {
+                'male': ['Takumi'],
+                'female': ['Kazuha'],
+                'announcer': 'Takumi'
+            },
+            'google': {
+                'male': ['ja-JP-Standard-C', 'ja-JP-Standard-D'],
+                'female': ['ja-JP-Standard-A', 'ja-JP-Standard-B'],
+                'announcer': 'ja-JP-Standard-D'
+            },
+            'azure': {
+                'male': ['ja-JP-KeitaNeural', 'ja-JP-DaichiNeural'],
+                'female': ['ja-JP-NanamiNeural', 'ja-JP-AoiNeural'],
+                'announcer': 'ja-JP-KeitaNeural'
+            }
         }
+        
+        # Service rotation for voice variety
+        self.tts_services = ['aws', 'google', 'azure']
+        self.current_service_index = 0
         
         # Create audio output directory
         self.audio_dir = os.path.join(

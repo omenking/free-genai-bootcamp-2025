@@ -32,13 +32,13 @@ https://github.com/ollama/ollama/blob/main/docs/api.md
 
 ## Download (Pull) a model
 
-curl http://localhost:9000/api/pull -d '{
+curl http://localhost:8008/api/pull -d '{
   "model": "llama3.2:1b"
 }'
 
 ## Generate a Request
 
-curl http://localhost:9000/api/generate -d '{
+curl http://localhost:/api/generate -d '{
   "model": "llama3.2:1b",
   "prompt": "Why is the sky blue?"
 }'
