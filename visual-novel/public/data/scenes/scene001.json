@@ -13,6 +13,7 @@
         "000": {
             "speakerId": "player",
             "audio": "wake-up",
+            "appear": "alex",
             "japanese": "あなたは新しいアパートにおり、朝日の光が窓の中を流すように、あなたは起きた。",
             "words": [
                 {"word": "あなた","start": 0.031,"end": 0.554},

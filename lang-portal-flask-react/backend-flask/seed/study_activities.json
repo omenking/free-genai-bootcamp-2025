@@ -1,4 +1,5 @@
 [
   {"name": "Typing Tutor", "url": "http://localhost:8080", "preview_url": "/assets/study_activities/typing-tutor.png"},
-  {"name": "Writing Practice", "url": "http://localhost:8081", "preview_url": ""}
+  {"name": "Writing Practice", "url": "http://localhost:8081", "preview_url": ""},
+  {"name": "Identify Verb Group", "url": "http://localhost:5173/study_activities/identify-verb-group", "preview_url": "/assets/study_activities/identify-verb-group.png"}
 ]
